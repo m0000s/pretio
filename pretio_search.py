@@ -33,20 +33,24 @@ else:
 if len(sys.argv) == 1:
 	print('%sUsage: %spython3 ' % (G,W)+sys.argv[0]+' <query search>')
 	sys.exit(1)
-try:
-	query = ' '.join(sys.argv[1:])
-	file_hosts = 'hosts.'+query+'.txt'
-	search = api.search(query)
-	i = 0
-	for service in search['matches']:
-		sleep(0.25)
-		print(ip+W+service['ip_str'])
-		i = i + 1
-		hosts_open = open(file_hosts,'a+')
-		hosts_open.write(service['ip_str']+'\n')
-		hosts_open.close()
-	print('\n',G,i,W,'Results found.')
-	print(G+'Succes'+W+' saved in. '+file_hosts+'/')
-except Exception as e:
-	print('%sError %s%s' % (R,W,e))
-	sys.exit(1)
+#try:
+query = ' '.join(sys.argv[1:])
+file_hosts = 'hosts.'+query+'.txt'
+search = api.search(query)
+i = 0
+for service in search['matches']:
+	sleep(0.25)
+    #Info gather
+	print(ip+W+' '+service['ip_str'])
+	print(B,'  * ',W,'city',G,'   :',W,service['location']['city'])
+	print(B,'  * ',W,'country',G,': ',W,service['location']['country_name'])
+	print(B,'  * ',W,'port',G,'   : ',W,service['port'])
+	i += 1
+	hosts_open = open(file_hosts,'a+')
+	hosts_open.write(service['ip_str']+'\n')
+	hosts_open.close()
+print('\n',G,i,W,'Results found.')
+print(G+'Succes'+W+' saved in. '+file_hosts+'/')
+#except Exception as e:
+#	print('%sError %s%s' % (R,W,e))
+#	sys.exit(1)
